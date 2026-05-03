@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.jeff.bettergui.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "client": [
+    "InGameHUDMixin",
+    "OptionsScreenMixin"
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
