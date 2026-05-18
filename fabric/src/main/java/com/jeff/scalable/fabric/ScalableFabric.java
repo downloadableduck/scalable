@@ -1,8 +1,6 @@
-package com.jeff.bettergui.fabric;
+package com.jeff.scalable.fabric;
 
 import net.fabricmc.api.ModInitializer;
-
-import com.jeff.bettergui.Scalable;
 
 public final class ScalableFabric implements ModInitializer {
     @Override

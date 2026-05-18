@@ -24,6 +24,10 @@ subprojects {
     }
 
     repositories {
+        maven {
+            name "CaffeineMC"
+            url "https://maven.caffeinemc.net/releases"
+        }
         // Add repositories to retrieve artifacts from in here.
         // You should only use this when depending on other mods because
         // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
@@ -38,6 +42,7 @@ subprojects {
     dependencies {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
         compileOnly "me.shedaniel.cloth:cloth-config-neoforge:26.1.154"
+
     }
 
     java {

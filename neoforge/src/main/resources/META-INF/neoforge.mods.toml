@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "[10,)"
-issueTrackerURL = ""
+issueTrackerURL = "https://github.com/downloadableduck/scalable"
 license = "MIT"
 
 [[mods]]
@@ -13,6 +13,11 @@ Resize each element of the GUI individually.
 '''
 logoFile = "assets/scalable/icon.png"
 
+
+[modproperties.scalable]
+"sodium:config_api_user" = "com.jeff.scalable.ScalableSodiumPage"
+
+
 [[dependencies.scalable]]
 modId = "neoforge"
 type = "required"
@@ -23,9 +28,24 @@ side = "BOTH"
 [[dependencies.scalable]]
 modId = "minecraft"
 type = "required"
-versionRange = "[26.1, 26.1.3)"
+versionRange = "[26.1, 26.1.4)"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.scalable]]
+modId = "sodium"
+type = "required"
+versionRange = "[0.8.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.scalable]]
+modId = "cloth_config"
+type = "required"
+versionRange = "[0,)"
+ordering = "NONE"
+side = "BOTH"
+
 
 [[mixins]]
 config = "scalable.mixins.json"

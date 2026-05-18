@@ -1,5 +1,6 @@
-package com.jeff.bettergui.mixin;
+package com.jeff.scalable.mixin;
 
+import net.caffeinemc.mods.sodium.client.gui.VideoSettingsScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.gui.screens.ChatScreen;
@@ -13,8 +14,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static com.jeff.bettergui.Scalable.CONFIG;
-import static com.jeff.bettergui.Scalable.normGuiScale;
+import static com.jeff.scalable.Scalable.CONFIG;
+import static com.jeff.scalable.Scalable.normGuiScale;
 
 @Mixin(Minecraft.class)
 public class InGameHUDMixin {
@@ -22,6 +23,7 @@ public class InGameHUDMixin {
     @Inject(method = "setScreen", at = @At("HEAD"))
     private static void setScreen(Screen screen, CallbackInfo ci) {
         OptionInstance<@NotNull Integer> guiScale = Minecraft.getInstance().options.guiScale();
+        if (normGuiScale == -1) normGuiScale = guiScale.get();
         if (screen instanceof AbstractContainerScreen<?>) {
             guiScale.set(CONFIG.containerSize);
         } else if (screen instanceof ChatScreen) {
@@ -30,13 +32,10 @@ public class InGameHUDMixin {
             guiScale.set(CONFIG.titleSize);
         } else if (Minecraft.getInstance().options.keyPlayerList.isDown()) {
             guiScale.set(CONFIG.tabSize);
-        } else if (screen instanceof OptionsScreen) {
-            normGuiScale = guiScale.get();
-            Minecraft.getInstance().options.guiScale().set(normGuiScale);
-            Minecraft.getInstance().options.save();
+        } else if (screen instanceof OptionsScreen || screen instanceof VideoSettingsScreen) {
+            guiScale.set(normGuiScale);
         } else {
             guiScale.set(normGuiScale);
-            Minecraft.getInstance().options.save();
         }
     }
 }

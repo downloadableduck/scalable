@@ -1,9 +1,11 @@
-package com.jeff.bettergui;
+package com.jeff.scalable;
 
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.vehicle.minecart.Minecart;
 
-import static com.jeff.bettergui.Scalable.normGuiScale;
+import static com.jeff.scalable.Scalable.normGuiScale;
 
 @Config(name = "scalable")
 public class ScalableConfig implements ConfigData {

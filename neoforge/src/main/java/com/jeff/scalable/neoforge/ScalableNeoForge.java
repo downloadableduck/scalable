@@ -1,6 +1,6 @@
-package com.jeff.bettergui.neoforge;
+package com.jeff.scalable.neoforge;
 
-import com.jeff.bettergui.Scalable;
+import com.jeff.scalable.Scalable;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.Mod;
 

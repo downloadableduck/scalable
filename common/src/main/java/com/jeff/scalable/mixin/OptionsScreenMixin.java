@@ -1,7 +1,7 @@
-package com.jeff.bettergui.mixin;
+package com.jeff.scalable.mixin;
 
-import com.jeff.bettergui.Scalable;
-import com.jeff.bettergui.ScalableConfig;
+import com.jeff.scalable.Scalable;
+import com.jeff.scalable.ScalableConfig;
 import com.mojang.serialization.Codec;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.client.Minecraft;
@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-import static com.jeff.bettergui.Scalable.CONFIG;
+import static com.jeff.scalable.Scalable.CONFIG;
 
 @Mixin(VideoSettingsScreen.class)
 public abstract class OptionsScreenMixin extends OptionsSubScreen {
@@ -31,7 +31,6 @@ public abstract class OptionsScreenMixin extends OptionsSubScreen {
 
     @Inject(at = @At("HEAD"), method = "addOptions")
     private void addOptions(CallbackInfo ci) {
-        Scalable.normGuiScale = Minecraft.getInstance().options.guiScale().get();
         OptionInstance<@NotNull Integer> CONTAINER_SCALE = new OptionInstance<@NotNull Integer>(
                 "Container Scale: " + CONFIG.containerSize,
                 value -> Tooltip.create(Component.literal("The scale that containers will be render at (inventory screens, crafting tables, etc.)")),

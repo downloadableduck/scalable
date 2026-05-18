@@ -1,7 +1,8 @@
-package com.jeff.bettergui.fabric.client;
+package com.jeff.scalable.fabric.client;
 
-import com.jeff.bettergui.Scalable;
+import com.jeff.scalable.Scalable;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 
 public final class ScalableFabricClient implements ClientModInitializer {
     @Override
