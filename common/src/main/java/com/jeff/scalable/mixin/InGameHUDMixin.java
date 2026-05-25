@@ -24,6 +24,9 @@ public class InGameHUDMixin {
     private static void setScreen(Screen screen, CallbackInfo ci) {
         OptionInstance<@NotNull Integer> guiScale = Minecraft.getInstance().options.guiScale();
         if (normGuiScale == -1) normGuiScale = guiScale.get();
+        if (screen instanceof OptionsScreen || screen instanceof VideoSettingsScreen || screen instanceof net.minecraft.client.gui.screens.options.VideoSettingsScreen) {
+            normGuiScale = guiScale.get();
+        }
         if (screen instanceof AbstractContainerScreen<?>) {
             guiScale.set(CONFIG.containerSize);
         } else if (screen instanceof ChatScreen) {
