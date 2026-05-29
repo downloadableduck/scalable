@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "scalable",
+  "version": "${version}",
+  "name": "Scalable",
+  "description": "Resize each element of the GUI individually.",
+  "authors": [
+    "downloadableduck"
+  ],
+  "contact": {
+    "modrinth": "https://modrinth.com/project/downloadableduck-scalable",
+    "sources": "https://github.com/downloadableduck/scalable"
+  },
+  "license": "MIT",
+  "icon": "assets/scalable/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "main": [
+      "com.jeff.scalable.fabric.ScalableFabric"
+    ],
+    "client": [
+      "com.jeff.scalable.fabric.client.ScalableFabricClient"
+    ],
+    "sodium:config_api_user": [
+      "com.jeff.scalable.ScalableSodiumPage"
+    ]
+  },
+  "mixins": [
+    "scalable.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.18.2",
+    "minecraft": ">=1.21.11",
+    "java": ">=21",
+    "cloth-config": "*",
+    "sodium": "*"
+  }
+}
