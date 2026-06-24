@@ -29,7 +29,7 @@ dependencies {
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     implementation "net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version"
-    implementation("net.caffeinemc:sodium-fabric:0.8.9+mc26.1.1")
+    implementation("net.caffeinemc:sodium-fabric:0.9.1-beta.2+mc26.2")
 
 
     include project(':common')

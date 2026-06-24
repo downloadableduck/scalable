@@ -3,6 +3,7 @@ package com.jeff.scalable.mixin;
 import net.caffeinemc.mods.sodium.client.gui.VideoSettingsScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.OptionInstance;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
@@ -17,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static com.jeff.scalable.Scalable.CONFIG;
 import static com.jeff.scalable.Scalable.normGuiScale;
 
-@Mixin(Minecraft.class)
+@Mixin(Gui.class)
 public class InGameHUDMixin {
 
     @Inject(method = "setScreen", at = @At("HEAD"))
