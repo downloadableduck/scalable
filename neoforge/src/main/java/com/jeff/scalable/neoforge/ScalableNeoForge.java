@@ -1,6 +1,8 @@
 package com.jeff.scalable.neoforge;
 
 import com.jeff.scalable.Scalable;
+import com.jeff.scalable.ScalableConfig;
+import me.shedaniel.autoconfig.ConfigData;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.Mod;
 

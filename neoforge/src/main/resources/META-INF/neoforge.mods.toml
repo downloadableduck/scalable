@@ -43,9 +43,8 @@ side = "BOTH"
 modId = "cloth_config"
 type = "required"
 versionRange = "[0,)"
-ordering = "NONE"
+ordering = "BEFORE"
 side = "BOTH"
-
 
 [[mixins]]
 config = "scalable.mixins.json"

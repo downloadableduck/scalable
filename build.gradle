@@ -41,8 +41,6 @@ subprojects {
 
     dependencies {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
-        compileOnly "me.shedaniel.cloth:cloth-config-neoforge:26.1.154"
-
     }
 
     java {

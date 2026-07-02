@@ -14,10 +14,11 @@ import java.util.List;
 
 public final class Scalable {
     public static final String MOD_ID = "scalable";
-    public static ScalableConfig CONFIG = AutoConfig.register(ScalableConfig.class, GsonConfigSerializer::new).getConfig();
+    public static ScalableConfig CONFIG;
     public static int normGuiScale = -1;
 
 
     public static void init() {
+        CONFIG = AutoConfig.register(ScalableConfig.class, GsonConfigSerializer::new).getConfig();
     }
 }

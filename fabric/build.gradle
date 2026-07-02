@@ -30,9 +30,8 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     implementation "net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version"
     implementation("net.caffeinemc:sodium-fabric:0.8.9+mc26.1.1")
+    implementation "me.shedaniel.cloth:cloth-config-fabric:26.1.154"
 
-
-    include project(':common')
 
     common(project(path: ':common')) { transitive = false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
@@ -50,3 +49,4 @@ shadowJar {
     configurations = [project.configurations.shadowBundle]
     archiveClassifier = 'dev-shadow'
 }
+tasks.build.dependsOn shadowJar
