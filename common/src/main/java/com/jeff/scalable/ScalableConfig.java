@@ -13,4 +13,6 @@ public class ScalableConfig implements ConfigData {
     public Integer tabSize = normGuiScale;
     public Integer chatSize = normGuiScale;
     public Integer titleSize = normGuiScale;
+    public Integer hotbarSize = normGuiScale;
+    public boolean showBlurredBackground = true;
 }

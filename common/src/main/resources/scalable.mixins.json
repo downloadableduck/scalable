@@ -4,7 +4,10 @@
   "compatibilityLevel": "JAVA_25",
   "minVersion": "0.8",
   "client": [
-    "InGameHUDMixin",
+    "AbstractContainerScreenMousePosFixin",
+    "ContainerMixin",
+    "GuiItemAtlasPixelResolutionFixin",
+    "HotbarPositionFixin",
     "OptionsScreenMixin"
   ],
   "mixins": [

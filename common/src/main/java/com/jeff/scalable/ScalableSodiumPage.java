@@ -21,29 +21,6 @@ public class ScalableSodiumPage implements ConfigEntryPoint {
                 .setName("Scalable")
                 .setIcon(Identifier.fromNamespaceAndPath(MOD_ID, "icon.png"))
                 .addPage(builder.createOptionPage()
-                        .setName(Component.literal("Scaling"))
-                        .addOptionGroup(builder.createOptionGroup()
-                                .setName(Component.literal("name"))
-                                .addOption(builder.createIntegerOption(
-                                        Identifier.fromNamespaceAndPath(MOD_ID, "global_scale"))
-                                        .setValueFormatter(new ControlValueFormatter() {
-                                            @Override
-                                            public Component format(int i) {
-                                                return Component.literal(String.valueOf(i));
-                                            }
-                                        }).setValidator(new Validator())
-                                        .setDefaultValue(guiScale)
-                                        .setTooltip(Component.literal("Adjusts your global" +
-                                                " GUI scale. This will only change GUIs not affected " +
-                                                "by Scalable, such as the hotbar or scoreboard."))
-                                        .setBinding((val) -> {
-                                            Minecraft.getInstance().options.guiScale().set(val);
-                                        }, () -> {
-                                            return guiScale;
-                                        }).setName(Component.literal("Global Scale"))
-                                        .setStorageHandler(() -> {
-                                            Minecraft.getInstance().options.save();
-                                        }))
                                 .addOption(builder.createIntegerOption(
                                         Identifier.fromNamespaceAndPath(MOD_ID, "container_scale")
                                 ).setValueFormatter(i -> Component.literal(String.valueOf(i)))
@@ -96,6 +73,6 @@ public class ScalableSodiumPage implements ConfigEntryPoint {
                                         }).setName(Component.literal("Title Scale")).setStorageHandler(() -> {
                                             AutoConfig.getConfigHolder(ScalableConfig.class).save();
                                         }))
-                                .setName(Component.literal("Gui Scaling"))));
+                                .setName(Component.literal("Gui Scaling")));
     }
 }

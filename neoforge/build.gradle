@@ -38,8 +38,8 @@ repositories {
 dependencies {
     neoForge "net.neoforged:neoforge:$rootProject.neoforge_version"
 
-    include project(':common')
     implementation("net.caffeinemc:sodium-neoforge:0.9.1-beta.2+mc26.2")
+    implementation "me.shedaniel.cloth:cloth-config-neoforge:${project.cloth_config_version}"
 
     common(project(path: ':common')) { transitive = false }
     shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')
