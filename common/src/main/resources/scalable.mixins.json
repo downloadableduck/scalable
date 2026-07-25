@@ -5,9 +5,11 @@
   "minVersion": "0.8",
   "client": [
     "AbstractContainerScreenMousePosFixin",
+    "BarMixins$ContextualBarMixin",
+    "BarMixins$ExperienceBarMixin",
     "ContainerMixin",
-    "GuiItemAtlasPixelResolutionFixin",
-    "HotbarPositionFixin",
+    "HudAndMiscStuffMixin",
+    "ItemResolutionFixin",
     "OptionsScreenMixin"
   ],
   "mixins": [

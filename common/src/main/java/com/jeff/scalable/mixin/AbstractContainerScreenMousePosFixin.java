@@ -20,7 +20,7 @@ public class AbstractContainerScreenMousePosFixin {
             float x;
              x = screen.width / 2.0f;
 
-             if (!Minecraft.getInstance().options.fullscreen().get()) {
+            if (!Minecraft.getInstance().options.fullscreen().get() && !(Minecraft.getInstance().options.guiScale().get() == 1)) {
                  scale = scale * 2;
              }
 
@@ -38,7 +38,7 @@ public class AbstractContainerScreenMousePosFixin {
         if (scale != 1.0f && scale > 0) {
             float y = screen.height / 2.0f;
 
-            if (!Minecraft.getInstance().options.fullscreen().get()) {
+            if (!Minecraft.getInstance().options.fullscreen().get() && !(Minecraft.getInstance().options.guiScale().get() == 1)) {
                 scale = scale * 2;
             }
 
