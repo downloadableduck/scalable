@@ -21,6 +21,18 @@ public class ScalableSodiumPage implements ConfigEntryPoint {
                 .setName("Scalable")
                 .setIcon(Identifier.fromNamespaceAndPath(MOD_ID, "icon.png"))
                 .addPage(builder.createOptionPage()
+                        .addOption(builder.createBooleanOption(
+                                        Identifier.fromNamespaceAndPath(MOD_ID, "show_blurred_background")
+                                )
+                                .setDefaultValue(CONFIG.showBlurredBackground)
+                                .setTooltip(Component.literal("Whether to show the blurred background of containers."))
+                                .setBinding((value) -> {
+                                    CONFIG.showBlurredBackground = value;
+                                }, () -> {
+                                    return CONFIG.showBlurredBackground;
+                                }).setName(Component.literal("Show Blurred Container Background?")).setStorageHandler(() -> {
+                                    AutoConfig.getConfigHolder(ScalableConfig.class).save();
+                                }))
                                 .addOption(builder.createIntegerOption(
                                         Identifier.fromNamespaceAndPath(MOD_ID, "container_scale")
                                 ).setValueFormatter(i -> Component.literal(String.valueOf(i)))
@@ -73,6 +85,60 @@ public class ScalableSodiumPage implements ConfigEntryPoint {
                                         }).setName(Component.literal("Title Scale")).setStorageHandler(() -> {
                                             AutoConfig.getConfigHolder(ScalableConfig.class).save();
                                         }))
+
+                        .addOption(builder.createIntegerOption(
+                                        Identifier.fromNamespaceAndPath(MOD_ID, "hotbar_scale")
+                                ).setValueFormatter(i -> Component.literal(String.valueOf(i)))
+                                .setValidator(new Validator())
+                                .setDefaultValue(CONFIG.hotbarSize)
+                                .setTooltip(Component.literal("Change the scale of the hotbar and its decorations."))
+                                .setBinding((value) -> {
+                                    CONFIG.hotbarSize = value;
+                                }, () -> {
+                                    return CONFIG.hotbarSize;
+                                }).setName(Component.literal("Hotbar Scale")).setStorageHandler(() -> {
+                                    AutoConfig.getConfigHolder(ScalableConfig.class).save();
+                                }))
+
+                        .addOption(builder.createIntegerOption(
+                                        Identifier.fromNamespaceAndPath(MOD_ID, "scoreboard_scale")
+                                ).setValueFormatter(i -> Component.literal(String.valueOf(i)))
+                                .setValidator(new Validator())
+                                .setDefaultValue(CONFIG.scoreboardSize)
+                                .setTooltip(Component.literal("Change the scale of the scoreboard."))
+                                .setBinding((value) -> {
+                                    CONFIG.scoreboardSize = value;
+                                }, () -> {
+                                    return CONFIG.scoreboardSize;
+                                }).setName(Component.literal("Scoreboard Scale")).setStorageHandler(() -> {
+                                    AutoConfig.getConfigHolder(ScalableConfig.class).save();
+                                }))
+                        .addOption(builder.createIntegerOption(
+                                        Identifier.fromNamespaceAndPath(MOD_ID, "f3_scale")
+                                ).setValueFormatter(i -> Component.literal(String.valueOf(i)))
+                                .setValidator(new Validator())
+                                .setDefaultValue(CONFIG.f3size)
+                                .setTooltip(Component.literal("Change the scale of the f3/debug menu."))
+                                .setBinding((value) -> {
+                                    CONFIG.f3size = value;
+                                }, () -> {
+                                    return CONFIG.f3size;
+                                }).setName(Component.literal("F3/Debug Scale")).setStorageHandler(() -> {
+                                    AutoConfig.getConfigHolder(ScalableConfig.class).save();
+                                }))
+                        .addOption(builder.createIntegerOption(
+                                        Identifier.fromNamespaceAndPath(MOD_ID, "tooltip_scale")
+                                ).setValueFormatter(i -> Component.literal(String.valueOf(i)))
+                                .setValidator(new Validator())
+                                .setDefaultValue(CONFIG.tooltipSize)
+                                .setTooltip(Component.literal("Change the scale of tooltips."))
+                                .setBinding((value) -> {
+                                    CONFIG.tooltipSize = value;
+                                }, () -> {
+                                    return CONFIG.tooltipSize;
+                                }).setName(Component.literal("F3/Debug Scale")).setStorageHandler(() -> {
+                                    AutoConfig.getConfigHolder(ScalableConfig.class).save();
+                                }))
                                 .setName(Component.literal("Gui Scaling")));
     }
 }

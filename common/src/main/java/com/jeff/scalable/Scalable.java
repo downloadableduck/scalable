@@ -72,4 +72,18 @@ public final class Scalable {
     public static boolean shouldNotRescaleScreen(Screen screen) {
         return (!(screen instanceof AbstractContainerScreen<?>));
     }
+
+    public static float getHotbarScaledSize() {
+        float ret = (float) CONFIG.hotbarSize / Minecraft.getInstance().options.guiScale().get();
+        if (Minecraft.getInstance().options.guiScale().get() == 0) {
+            ret = Minecraft.getInstance().options.fullscreen().get() ? (float) CONFIG.hotbarSize / 5 : (float) CONFIG.hotbarSize / 2;
+        }
+        if (!Minecraft.getInstance().options.fullscreen().get()) {
+            ret = (float) Math.min(CONFIG.hotbarSize, 2) / Minecraft.getInstance().options.guiScale().get();
+        }
+        if (CONFIG.hotbarSize == 0) {
+            ret = Minecraft.getInstance().options.fullscreen().get() ? (float) 5 / Minecraft.getInstance().options.guiScale().get(): (float) 2 / Minecraft.getInstance().options.guiScale().get();
+        }
+        return ret;
+    }
 }

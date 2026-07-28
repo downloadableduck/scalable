@@ -15,4 +15,7 @@ public class ScalableConfig implements ConfigData {
     public Integer titleSize = normGuiScale;
     public Integer hotbarSize = normGuiScale;
     public boolean showBlurredBackground = true;
+    public Integer scoreboardSize = normGuiScale;
+    public Integer f3size = normGuiScale;
+    public Integer tooltipSize = normGuiScale;
 }

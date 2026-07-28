@@ -1,5 +1,6 @@
 package com.jeff.scalable.mixin;
 
+import com.jeff.scalable.Scalable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.Hud;
@@ -22,7 +23,7 @@ public class HudAndMiscStuffMixin {
         int width = args.get(4);
         int height = args.get(5);
 
-        float scale = Minecraft.getInstance().options.fullscreen().get() ? CONFIG.hotbarSize : Math.min(CONFIG.hotbarSize, 2);
+        float scale = Scalable.getHotbarScaledSize();
 
         int with2 = Math.round(width * scale);
         int height2 = Math.round(height * scale);
@@ -35,8 +36,8 @@ public class HudAndMiscStuffMixin {
         int i = args.get(4);
         int j = args.get(5);
 
-        int value = Minecraft.getInstance().options.fullscreen().get() ? i * CONFIG.hotbarSize : i * Math.min(CONFIG.containerSize, 2);
-        int value2 = Minecraft.getInstance().options.fullscreen().get() ? j * CONFIG.hotbarSize : j * Math.min(CONFIG.containerSize, 2);
+        int value = Minecraft.getInstance().options.fullscreen().get() ? (int) (i * Scalable.getHotbarScaledSize()) : (int) (i * Math.min(Scalable.getHotbarScaledSize(), 2));
+        int value2 = Minecraft.getInstance().options.fullscreen().get() ? (int) (j * Scalable.getHotbarScaledSize()) : (int) (j * Math.min(Scalable.getHotbarScaledSize(), 2));
 
         args.set(4, value);
         args.set(5, value2);
@@ -56,8 +57,8 @@ public class HudAndMiscStuffMixin {
         int width = args.get(4);
         int height = args.get(5);
 
-        int targetSize = CONFIG.hotbarSize;
-        float scale = Minecraft.getInstance().options.fullscreen().get() ? targetSize : Math.min(targetSize, 2);
+        float scale = Scalable.getHotbarScaledSize();
+        //float scale = Minecraft.getInstance().options.fullscreen().get() ? targetSize : Math.min(targetSize, 2);
 
         int width2 = Math.round(width * scale);
         int height2 = Math.round(height * scale);
@@ -78,7 +79,7 @@ public class HudAndMiscStuffMixin {
 
     @Inject(method = "extractHearts", at = @At("HEAD"))
     private void scalable_extractHearts(GuiGraphicsExtractor graphics, Player player, int xLeft, int yLineBase, int healthRowHeight, int heartOffsetIndex, float maxHealth, int currentHealth, int oldHealth, int absorption, boolean blink, CallbackInfo ci) {
-        int hotbarScale = CONFIG.hotbarSize;
+        float hotbarScale = Scalable.getHotbarScaledSize();
         float scale = Minecraft.getInstance().options.fullscreen().get() ? hotbarScale : Math.min(hotbarScale, 2);
 
         if (scale != 1.0f) {
@@ -94,7 +95,7 @@ public class HudAndMiscStuffMixin {
 
     @Inject(method = "extractHearts", at = @At("RETURN"))
     private void scalable_extractHerats(GuiGraphicsExtractor graphics, Player player, int xLeft, int yLineBase, int healthRowHeight, int heartOffsetIndex, float maxHealth, int currentHealth, int oldHealth, int absorption, boolean blink, CallbackInfo ci) {
-        int hotbarScale = CONFIG.hotbarSize;
+        float hotbarScale = Scalable.getHotbarScaledSize();
         float scale = Minecraft.getInstance().options.fullscreen().get() ? hotbarScale : Math.min(hotbarScale, 2);
 
         if (scale != 1.0f) {
@@ -104,7 +105,7 @@ public class HudAndMiscStuffMixin {
 
     @Inject(method = "extractFood", at = @At("HEAD"))
     private void scalable_extractFood(GuiGraphicsExtractor graphics, Player player, int yLineBase, int xRight, CallbackInfo ci) {
-        int hotbarScale = CONFIG.hotbarSize;
+        float hotbarScale = Scalable.getHotbarScaledSize();
         float scale = Minecraft.getInstance().options.fullscreen().get() ? hotbarScale : Math.min(hotbarScale, 2);
 
         if (scale != 1.0f) {
@@ -120,7 +121,7 @@ public class HudAndMiscStuffMixin {
 
     @Inject(method = "extractFood", at = @At("RETURN"))
     private void scalable_extractFrodoBaggins(GuiGraphicsExtractor graphics, Player player, int yLineBase, int xRight, CallbackInfo ci) {
-        int hotbarScale = CONFIG.hotbarSize;
+        float hotbarScale = Scalable.getHotbarScaledSize();
         float scale = Minecraft.getInstance().options.fullscreen().get() ? hotbarScale : Math.min(hotbarScale, 2);
 
         if (scale != 1.0f) {
@@ -130,7 +131,7 @@ public class HudAndMiscStuffMixin {
 
     @Inject(method = "extractAirBubbles", at = @At("HEAD"))
     private void scalable_extractAirBubbles(GuiGraphicsExtractor graphics, Player player, int vehicleHearts, int yLineAir, int xRight, CallbackInfo ci) {
-        int hotbarScale = CONFIG.hotbarSize;
+        float hotbarScale = Scalable.getHotbarScaledSize();
         float scale = Minecraft.getInstance().options.fullscreen().get() ? hotbarScale : Math.min(hotbarScale, 2);
 
         if (scale != 1.0f) {
@@ -146,7 +147,7 @@ public class HudAndMiscStuffMixin {
 
     @Inject(method = "extractAirBubbles", at = @At("RETURN"))
     private void scalable_extractAirBobbles(GuiGraphicsExtractor graphics, Player player, int vehicleHearts, int yLineAir, int xRight, CallbackInfo ci) {
-        int hotbarScale = CONFIG.hotbarSize;
+        float hotbarScale = Scalable.getHotbarScaledSize();
         float scale = Minecraft.getInstance().options.fullscreen().get() ? hotbarScale : Math.min(hotbarScale, 2);
 
         if (scale != 1.0f) {
@@ -156,7 +157,7 @@ public class HudAndMiscStuffMixin {
 
     @Inject(method = "extractArmor", at = @At("HEAD"))
     private static void scalable_extractArmor(GuiGraphicsExtractor graphics, Player player, int yLineBase, int numHealthRows, int healthRowHeight, int xLeft, CallbackInfo ci) {
-        int hotbarScale = CONFIG.hotbarSize;
+        float hotbarScale = Scalable.getHotbarScaledSize();
         float scale = Minecraft.getInstance().options.fullscreen().get() ? hotbarScale : Math.min(hotbarScale, 2);
 
         if (scale != 1.0f) {
@@ -172,7 +173,7 @@ public class HudAndMiscStuffMixin {
 
     @Inject(method = "extractArmor", at = @At("RETURN"))
     private static void scalable_extractFrodoBaggins(GuiGraphicsExtractor graphics, Player player, int yLineBase, int numHealthRows, int healthRowHeight, int xLeft, CallbackInfo ci) {
-        int hotbarScale = CONFIG.hotbarSize;
+        float hotbarScale = Scalable.getHotbarScaledSize();
         float scale = Minecraft.getInstance().options.fullscreen().get() ? hotbarScale : Math.min(hotbarScale, 2);
 
         if (scale != 1.0f) {

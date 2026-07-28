@@ -7,9 +7,9 @@
     "AbstractContainerScreenMousePosFixin",
     "BarMixins$ContextualBarMixin",
     "BarMixins$ExperienceBarMixin",
+    "BarMixins$JumpableVehicleBarMixin",
     "ContainerMixin",
     "HudAndMiscStuffMixin",
-    "ItemResolutionFixin",
     "OptionsScreenMixin"
   ],
   "mixins": [
