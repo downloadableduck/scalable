@@ -1,10 +1,12 @@
 package com.jeff.scalable.mixin;
 
 import com.jeff.scalable.Scalable;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.Hud;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -58,7 +60,6 @@ public class HudAndMiscStuffMixin {
         int height = args.get(5);
 
         float scale = Scalable.getHotbarScaledSize();
-        //float scale = Minecraft.getInstance().options.fullscreen().get() ? targetSize : Math.min(targetSize, 2);
 
         int width2 = Math.round(width * scale);
         int height2 = Math.round(height * scale);
@@ -186,8 +187,8 @@ public class HudAndMiscStuffMixin {
         float i = args.get(0);
         float j = args.get(1);
 
-        float value = Minecraft.getInstance().options.fullscreen().get() ? i * CONFIG.titleSize : i + CONFIG.titleSize;
-        float value2 = Minecraft.getInstance().options.fullscreen().get() ? j * CONFIG.titleSize : j + CONFIG.titleSize;
+        float value = Minecraft.getInstance().options.fullscreen().get() ? i * Scalable.getTitleScaledSize() : i + Scalable.getTitleScaledSize();
+        float value2 = Minecraft.getInstance().options.fullscreen().get() ? j * Scalable.getTitleScaledSize() : j + Scalable.getTitleScaledSize();
 
         args.set(0, Float.valueOf(value));
         args.set(1, Float.valueOf(value2));
@@ -198,10 +199,97 @@ public class HudAndMiscStuffMixin {
         float i = args.get(0);
         float j = args.get(1);
 
-        float value = Minecraft.getInstance().options.fullscreen().get() ? i * CONFIG.titleSize : (i + (float) CONFIG.titleSize / 2);
-        float value2 = Minecraft.getInstance().options.fullscreen().get() ? j * CONFIG.titleSize : (j + (float) CONFIG.titleSize / 2);
+        float value = Minecraft.getInstance().options.fullscreen().get() ? i * Scalable.getTitleScaledSize() : (i + (float) Scalable.getTitleScaledSize() / 2);
+        float value2 = Minecraft.getInstance().options.fullscreen().get() ? j * Scalable.getTitleScaledSize() : (j + (float) Scalable.getTitleScaledSize() / 2);
 
         args.set(0, Float.valueOf(value));
         args.set(1, Float.valueOf(value2));
     }
+
+    @ModifyArgs(
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/Hud;extractSlot(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IILnet/minecraft/client/DeltaTracker;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/item/ItemStack;I)V"
+            ),
+            method = "extractItemHotbar"
+    )
+    private void scalable_positionHotbarItem(Args args) {
+        int x = args.get(1);
+        int y = args.get(2);
+
+        float scale = Scalable.getHotbarScaledSize();
+        int screenMiddle = Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2;
+
+        int offsetFromCenter = x - screenMiddle;
+
+        int scaledX = screenMiddle + Math.round(offsetFromCenter * scale);
+        int screenBottom = Minecraft.getInstance().getWindow().getGuiScaledHeight();
+        int scaledY = screenBottom - Math.round((screenBottom - y) * scale);
+
+        args.set(1, scaledX);
+        args.set(2, scaledY);
+    }
+
+    @Inject(
+            method = "extractSlot",
+            at = @At("HEAD")
+    )
+    private void scalable_scaleHotbarItemHead(
+            GuiGraphicsExtractor graphics,
+            int x,
+            int y,
+            DeltaTracker deltaTracker,
+            Player player,
+            ItemStack stack,
+            int seed,
+            CallbackInfo ci
+    ) {
+        float scale = Scalable.getHotbarScaledSize();
+
+        graphics.pose().pushMatrix();
+
+        graphics.pose().translate(0, 0);
+
+        graphics.pose().translate(x, y);
+
+        graphics.pose().scale(scale, scale);
+        graphics.pose().translate(-x, -y);
+    }
+
+    @Inject(
+            method = "extractSlot",
+            at = @At("RETURN")
+    )
+    private void scalable_scaleHotbarItemReturn(
+            GuiGraphicsExtractor graphics,
+            int x,
+            int y,
+            DeltaTracker deltaTracker,
+            Player player,
+            ItemStack stack,
+            int seed,
+            CallbackInfo ci
+    ) {
+        graphics.pose().popMatrix();
+    }
+
+    @Inject(at = @At("HEAD"), method = "extractSelectedItemName")
+    private void extract(GuiGraphicsExtractor graphics, CallbackInfo ci) {
+        float textScale = Scalable.getHotbarScaledSize();
+
+        int centerX = graphics.guiWidth() / 2;
+        int yAnchor = graphics.guiHeight() - 10;
+
+        graphics.pose().pushMatrix();
+
+        graphics.pose().translate(centerX, yAnchor);
+        graphics.pose().scale(textScale, textScale);
+        graphics.pose().translate(-centerX, -yAnchor);
+    }
+
+    @Inject(at = @At("TAIL"), method = "extractSelectedItemName")
+    private void extractTail(GuiGraphicsExtractor graphics, CallbackInfo ci) {
+        graphics.pose().popMatrix();
+    }
 }
+

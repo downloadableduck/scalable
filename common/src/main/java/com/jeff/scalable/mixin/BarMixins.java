@@ -1,23 +1,20 @@
 package com.jeff.scalable.mixin;
 
 import com.jeff.scalable.Scalable;
-import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.client.DeltaTracker;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.contextualbar.ContextualBar;
 import net.minecraft.client.gui.contextualbar.ExperienceBar;
 import net.minecraft.client.gui.contextualbar.JumpableVehicleBar;
-import net.minecraft.gizmos.TextGizmo;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.Style;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
@@ -28,35 +25,57 @@ public class BarMixins {
     @Mixin(ContextualBar.class)
     public interface ContextualBarMixin {
 
-        @ModifyArgs(
-                at = @At(
-                        value = "INVOKE",
-                        target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;text(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)V"
-                ),
-                method = "extractExperienceLevel"
+        @Redirect(method = "extractExperienceLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;guiHeight()I"))
+        private static int onGuiHeight(GuiGraphicsExtractor instance) {
+            return CONFIG.hotbarSize * Minecraft.getInstance().getWindow().getHeight();
+        }
+
+        @Redirect(method = "extractExperienceLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;guiWidth()I"))
+        private static int onGuiWidth(GuiGraphicsExtractor instance) {
+            return CONFIG.hotbarSize * Minecraft.getInstance().getWindow().getWidth();
+        }
+
+        @Inject(
+                method = "extractExperienceLevel",
+                at = @At("HEAD"),
+                cancellable = true
         )
-        private static void scalable_extractExperienceText(Args args) {
-            Font font = args.get(0);
-            Component str = args.get(1);
+        private static void customScaleExperienceLevel(
+                GuiGraphicsExtractor graphics, Font font, int experienceLevel, CallbackInfo ci
+        ) {
+            float expTextScale = Scalable.getHotbarScaledSize();
 
-            int x = args.get(2);
-            int y = args.get(3);
+            if (expTextScale <= 0.0f) {
+                ci.cancel();
+                return;
+            }
 
-            float scale = Minecraft.getInstance().options.fullscreen().get()
-                    ? Scalable.getHotbarScaledSize()
-                    : Math.min(Scalable.getHotbarScaledSize(), 2);
+            float baseBarHeight = 31.0f;
+            float offsetY = -(baseBarHeight * expTextScale - baseBarHeight);
+            float offsetX = 0.0f;
 
-            int width = font.width(str);
-            int height = font.lineHeight;
+            Component str = Component.translatable("gui.experience.level", experienceLevel);
+            int textWidth = font.width(str);
 
-            int scaledWidth = Math.round(width * scale);
-            int scaledHeight = Math.round(height * scale);
+            float baseX = (graphics.guiWidth() - textWidth) / 2.0f;
+            float baseY = graphics.guiHeight() - 35.0f;
 
-            int xOffset = (scaledWidth - width) / 2;
-            int yOffset = ((scaledHeight - height) * 2);
+            graphics.pose().pushMatrix();
 
-            args.set(2, x - xOffset);
-            args.set(3, y - yOffset);
+            float centerX = baseX + (textWidth / 2.0f);
+            float centerY = baseY + (font.lineHeight / 2.0f);
+
+            graphics.pose().translate(centerX + offsetX, centerY + offsetY);
+            graphics.pose().scale(expTextScale, expTextScale);
+            graphics.pose().translate(-textWidth / 2.0f, -font.lineHeight / 2.0f);
+            graphics.text(font, str, 1, 0, -16777216, false);
+            graphics.text(font, str, -1, 0, -16777216, false);
+            graphics.text(font, str, 0, 1, -16777216, false);
+            graphics.text(font, str, 0, -1, -16777216, false);
+            graphics.text(font, str, 0, 0, -8323296, false);
+
+            graphics.pose().popMatrix();
+            ci.cancel();
         }
     }
 
@@ -71,8 +90,6 @@ public class BarMixins {
             int height = args.get(5);
 
             float scale = Minecraft.getInstance().options.fullscreen().get() ? Scalable.getHotbarScaledSize() : Math.min(Scalable.getHotbarScaledSize(), 2);
-
-            System.out.println(Scalable.getHotbarScaledSize());
 
             int with2 = Math.round(width * scale);
             int height2 = Math.round(height * scale);

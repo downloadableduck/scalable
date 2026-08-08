@@ -8,8 +8,11 @@
     "BarMixins$ContextualBarMixin",
     "BarMixins$ExperienceBarMixin",
     "BarMixins$JumpableVehicleBarMixin",
+    "ContainerAccessor",
     "ContainerMixin",
     "HudAndMiscStuffMixin",
+    "InventoryScreenDollFixin",
+    "ItemResolutionFixin",
     "OptionsScreenMixin"
   ],
   "mixins": [

@@ -1,50 +1,54 @@
 package com.jeff.scalable.mixin;
 
 import com.jeff.scalable.Scalable;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.lang.reflect.Field;
 
 @Mixin(AbstractContainerScreen.class)
 public class AbstractContainerScreenMousePosFixin {
-    @ModifyVariable(method = "extractRenderState", at = @At("HEAD"), ordinal = 0, argsOnly = true)
-    private int adjustMouseX(int mouseX) {
-        Screen screen = (Screen) (Object) this;
-        float scale = Scalable.getScaleForScreen(screen);
 
-        if (scale != 1.0f && scale > 0) {
-            float x;
-             x = screen.width / 2.0f;
+    @Inject(
+            method = "isHovering(Lnet/minecraft/world/inventory/Slot;DD)Z",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void fixSlotHoverScale(net.minecraft.world.inventory.Slot slot, double mouseX, double mouseY, CallbackInfoReturnable<Boolean> cir) {
+        try {
+            float scale = Scalable.getScaledInventorySize();
+            if (scale == 1.0f || !Minecraft.getInstance().options.fullscreen().get()) return;
 
-            if (!Minecraft.getInstance().options.fullscreen().get() && !(Minecraft.getInstance().options.guiScale().get() == 1)) {
-                 scale = scale * 2;
-             }
+            AbstractContainerScreen<?> screen = (AbstractContainerScreen<?>) (Object) this;
 
-             return (int) (x + (mouseX - x) / scale);
+            double pivotX = screen.width / 2.0;
+            double pivotY = screen.height / 2.0;
+
+            double scaledMouseX = ((mouseX - pivotX) / scale) + pivotX;
+            double scaledMouseY = ((mouseY - pivotY) / scale) + pivotY;
+
+            Field leftPos = AbstractContainerScreen.class.getDeclaredField("leftPos");
+            leftPos.setAccessible(true);
+            Field topPos = AbstractContainerScreen.class.getDeclaredField("topPos");
+            topPos.setAccessible(true);
+            int i = leftPos.getInt(screen);
+            int j = topPos.getInt(screen);
+
+            boolean isHovered = scaledMouseX >= (i + slot.x) && scaledMouseX < (i + slot.x + 16) &&
+                    scaledMouseY >= (j + slot.y) && scaledMouseY < (j + slot.y + 16);
+
+            cir.setReturnValue(isHovered);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
-        return mouseX;
-    }
-
-    @ModifyVariable(method = "extractRenderState", at = @At("HEAD"), ordinal = 1, argsOnly = true)
-    private int adjustMouseY(int mouseY) {
-        Screen screen = (Screen) (Object) this;
-        float scale = Scalable.getScaleForScreen(screen);
-
-        if (scale != 1.0f && scale > 0) {
-            float y = screen.height / 2.0f;
-
-            if (!Minecraft.getInstance().options.fullscreen().get() && !(Minecraft.getInstance().options.guiScale().get() == 1)) {
-                scale = scale * 2;
-            }
-
-            return (int) (y + (mouseY - y) / scale);
-        }
-
-        return mouseY;
     }
 }

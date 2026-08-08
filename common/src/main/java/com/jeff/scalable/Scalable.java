@@ -86,4 +86,32 @@ public final class Scalable {
         }
         return ret;
     }
+
+    public static float getTitleScaledSize() {
+        float ret = (float) CONFIG.titleSize / Minecraft.getInstance().options.guiScale().get();
+        if (Minecraft.getInstance().options.guiScale().get() == 0) {
+            ret = Minecraft.getInstance().options.fullscreen().get() ? (float) CONFIG.titleSize / 5 : (float) CONFIG.titleSize / 2;
+        }
+        if (!Minecraft.getInstance().options.fullscreen().get()) {
+            ret = (float) Math.min(CONFIG.titleSize, 2) / Minecraft.getInstance().options.guiScale().get();
+        }
+        if (CONFIG.titleSize == 0) {
+            ret = Minecraft.getInstance().options.fullscreen().get() ? (float) 5 / Minecraft.getInstance().options.guiScale().get(): (float) 2 / Minecraft.getInstance().options.guiScale().get();
+        }
+        return ret;
+    }
+
+    public static float getScaledInventorySize() {
+        float ret = (float) CONFIG.containerSize / Minecraft.getInstance().options.guiScale().get();
+        if (Minecraft.getInstance().options.guiScale().get() == 0) {
+            ret = Minecraft.getInstance().options.fullscreen().get() ? (float) CONFIG.containerSize / 5 : (float) CONFIG.containerSize / 2;
+        }
+        if (!Minecraft.getInstance().options.fullscreen().get()) {
+            ret = (float) Math.min(CONFIG.containerSize, 2) / Minecraft.getInstance().options.guiScale().get();
+        }
+        if (CONFIG.containerSize == 0) {
+            ret = Minecraft.getInstance().options.fullscreen().get() ? (float) 5 / Minecraft.getInstance().options.guiScale().get(): (float) 2 / Minecraft.getInstance().options.guiScale().get();
+        }
+        return ret;
+    }
 }

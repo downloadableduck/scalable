@@ -1,5 +1,6 @@
 package com.jeff.scalable.mixin;
 
+import com.jeff.scalable.Scalable;
 import com.mojang.blaze3d.ProjectionType;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.GpuDevice;
@@ -43,16 +44,6 @@ public class ItemResolutionFixin {
 
     @ModifyVariable(at = @At("HEAD"), method = "<init>", argsOnly = true, ordinal = 1)
     private static int cancel(int slotTextureSize) {
-            return 64;
-    }
-
-    //@ModifyArgs(at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;scale(FFF)V"), method = "drawToSlot")
-    private void onDrawToSlot(Args args) {
-        float width = args.get(0);
-        float height = args.get(1);
-        float wha = args.get(2);
-        args.set(0, (float) 4);
-        args.set(1, (float) 4);
-        args.set(2, (float) 4);
+        return 64;
     }
 }
