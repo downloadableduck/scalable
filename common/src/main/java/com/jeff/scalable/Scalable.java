@@ -114,4 +114,32 @@ public final class Scalable {
         }
         return ret;
     }
+
+    public static float getTabScaledSize() {
+        float ret = (float) CONFIG.tabSize / Minecraft.getInstance().options.guiScale().get();
+        if (Minecraft.getInstance().options.guiScale().get() == 0) {
+            ret = Minecraft.getInstance().options.fullscreen().get() ? (float) CONFIG.tabSize / 5 : (float) CONFIG.tabSize / 2;
+        }
+        if (!Minecraft.getInstance().options.fullscreen().get()) {
+            ret = (float) Math.min(CONFIG.tabSize, 2) / Minecraft.getInstance().options.guiScale().get();
+        }
+        if (CONFIG.tabSize == 0) {
+            ret = Minecraft.getInstance().options.fullscreen().get() ? (float) 5 / Minecraft.getInstance().options.guiScale().get(): (float) 2 / Minecraft.getInstance().options.guiScale().get();
+        }
+        return ret;
+    }
+
+    public static float getScoreboardScaledSize() {
+        float ret = (float) CONFIG.scoreboardSize / Minecraft.getInstance().options.guiScale().get();
+        if (Minecraft.getInstance().options.guiScale().get() == 0) {
+            ret = Minecraft.getInstance().options.fullscreen().get() ? (float) CONFIG.scoreboardSize / 5 : (float) CONFIG.scoreboardSize / 2;
+        }
+        if (!Minecraft.getInstance().options.fullscreen().get()) {
+            ret = (float) Math.min(CONFIG.scoreboardSize, 2) / Minecraft.getInstance().options.guiScale().get();
+        }
+        if (CONFIG.scoreboardSize == 0) {
+            ret = Minecraft.getInstance().options.fullscreen().get() ? (float) 5 / Minecraft.getInstance().options.guiScale().get(): (float) 2 / Minecraft.getInstance().options.guiScale().get();
+        }
+        return ret;
+    }
 }

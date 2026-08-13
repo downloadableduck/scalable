@@ -16,7 +16,7 @@ import java.nio.charset.MalformedInputException;
 public abstract class InventoryScreenDollFixin {
 
     @ModifyArgs(
-            method = "extractBackground", // Or "render" / "renderBg"
+            method = "extractBackground",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/gui/screens/inventory/InventoryScreen;extractEntityInInventoryFollowsMouse(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIIIIFFFLnet/minecraft/world/entity/LivingEntity;)V"

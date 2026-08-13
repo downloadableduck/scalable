@@ -13,7 +13,8 @@
     "HudAndMiscStuffMixin",
     "InventoryScreenDollFixin",
     "ItemResolutionFixin",
-    "OptionsScreenMixin"
+    "OptionsScreenMixin",
+    "TickMixin"
   ],
   "mixins": [
   ],

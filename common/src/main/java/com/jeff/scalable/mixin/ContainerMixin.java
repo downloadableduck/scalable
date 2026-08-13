@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 import static com.jeff.scalable.Scalable.CONFIG;
 
 @Mixin(Screen.class)
-public class ContainerMixin {
+public abstract class ContainerMixin {
 
     @Shadow
     public int width;
@@ -34,17 +34,15 @@ public class ContainerMixin {
     @Inject(method = "extractBackground*", at = @At(value = "HEAD"))
     private void scalable_extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a, CallbackInfo ci) {
         Screen screen = (Screen) (Object) this;
-        float scale = Scalable.getScaleForScreen(screen);
+        if (!(screen instanceof AbstractContainerScreen<?>)) return;
         float x = graphics.guiWidth() / 2.0f;
         float y = graphics.guiHeight() / 2.0f;
-        if (scale != 1.0) {
             graphics.pose().translate(x, y);
-            graphics.pose().scale(Scalable.getScaleForScreen(screen));
+            graphics.pose().scale(Scalable.getScaledInventorySize());
             if (!Minecraft.getInstance().options.fullscreen().get() && !(Minecraft.getInstance().options.guiScale().get() == 1)) {
-                graphics.pose().scale(2);
+                //graphics.pose().scale(2);
             }
             graphics.pose().translate(-x, -y);
-        }
     }
     @Inject(at = @At("HEAD"), method = "extractTransparentBackground", cancellable = true)
     private void scalable_cancelBlurredBackground(GuiGraphicsExtractor graphics, CallbackInfo ci) {
@@ -55,6 +53,8 @@ public class ContainerMixin {
 
     @ModifyArgs(method = "extractTransparentBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;fillGradient(IIIIII)V"))
     private void scalable_extractBlurredBackground(Args args, GuiGraphicsExtractor guiGraphicsExtractor) {
+        Screen screen = (Screen) (Object) this;
+        if (!(screen instanceof AbstractContainerScreen<?>)) return;
         Window window = Minecraft.getInstance().getWindow();
         args.set(0,- this.width * 2);
         args.set(1, -this.height * 2);

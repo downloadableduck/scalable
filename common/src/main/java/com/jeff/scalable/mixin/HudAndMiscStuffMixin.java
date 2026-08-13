@@ -82,34 +82,24 @@ public class HudAndMiscStuffMixin {
     private void scalable_extractHearts(GuiGraphicsExtractor graphics, Player player, int xLeft, int yLineBase, int healthRowHeight, int heartOffsetIndex, float maxHealth, int currentHealth, int oldHealth, int absorption, boolean blink, CallbackInfo ci) {
         float hotbarScale = Scalable.getHotbarScaledSize();
         float scale = Minecraft.getInstance().options.fullscreen().get() ? hotbarScale : Math.min(hotbarScale, 2);
-
-        if (scale != 1.0f) {
-            float x = graphics.guiWidth() / 2.0f;
+         float x = graphics.guiWidth() / 2.0f;
             float y = graphics.guiHeight();
 
             graphics.pose().pushMatrix();
             graphics.pose().translate(x, y);
             graphics.pose().scale(scale, scale);
             graphics.pose().translate(-x, -y);
-        }
     }
 
     @Inject(method = "extractHearts", at = @At("RETURN"))
     private void scalable_extractHerats(GuiGraphicsExtractor graphics, Player player, int xLeft, int yLineBase, int healthRowHeight, int heartOffsetIndex, float maxHealth, int currentHealth, int oldHealth, int absorption, boolean blink, CallbackInfo ci) {
-        float hotbarScale = Scalable.getHotbarScaledSize();
-        float scale = Minecraft.getInstance().options.fullscreen().get() ? hotbarScale : Math.min(hotbarScale, 2);
-
-        if (scale != 1.0f) {
-            graphics.pose().popMatrix();
-        }
+         graphics.pose().popMatrix();
     }
 
     @Inject(method = "extractFood", at = @At("HEAD"))
     private void scalable_extractFood(GuiGraphicsExtractor graphics, Player player, int yLineBase, int xRight, CallbackInfo ci) {
         float hotbarScale = Scalable.getHotbarScaledSize();
         float scale = Minecraft.getInstance().options.fullscreen().get() ? hotbarScale : Math.min(hotbarScale, 2);
-
-        if (scale != 1.0f) {
             float x = graphics.guiWidth() / 2.0f;
             float y = graphics.guiHeight();
 
@@ -118,68 +108,46 @@ public class HudAndMiscStuffMixin {
             graphics.pose().scale(scale, scale);
             graphics.pose().translate(-x, -y);
         }
-    }
 
     @Inject(method = "extractFood", at = @At("RETURN"))
     private void scalable_extractFrodoBaggins(GuiGraphicsExtractor graphics, Player player, int yLineBase, int xRight, CallbackInfo ci) {
-        float hotbarScale = Scalable.getHotbarScaledSize();
-        float scale = Minecraft.getInstance().options.fullscreen().get() ? hotbarScale : Math.min(hotbarScale, 2);
-
-        if (scale != 1.0f) {
             graphics.pose().popMatrix();
-        }
     }
 
     @Inject(method = "extractAirBubbles", at = @At("HEAD"))
     private void scalable_extractAirBubbles(GuiGraphicsExtractor graphics, Player player, int vehicleHearts, int yLineAir, int xRight, CallbackInfo ci) {
         float hotbarScale = Scalable.getHotbarScaledSize();
         float scale = Minecraft.getInstance().options.fullscreen().get() ? hotbarScale : Math.min(hotbarScale, 2);
-
-        if (scale != 1.0f) {
-            float x = graphics.guiWidth() / 2.0f;
+         float x = graphics.guiWidth() / 2.0f;
             float y = graphics.guiHeight();
 
             graphics.pose().pushMatrix();
             graphics.pose().translate(x, y);
             graphics.pose().scale(scale, scale);
             graphics.pose().translate(-x, -y);
-        }
     }
 
     @Inject(method = "extractAirBubbles", at = @At("RETURN"))
     private void scalable_extractAirBobbles(GuiGraphicsExtractor graphics, Player player, int vehicleHearts, int yLineAir, int xRight, CallbackInfo ci) {
-        float hotbarScale = Scalable.getHotbarScaledSize();
-        float scale = Minecraft.getInstance().options.fullscreen().get() ? hotbarScale : Math.min(hotbarScale, 2);
-
-        if (scale != 1.0f) {
             graphics.pose().popMatrix();
-        }
     }
 
     @Inject(method = "extractArmor", at = @At("HEAD"))
     private static void scalable_extractArmor(GuiGraphicsExtractor graphics, Player player, int yLineBase, int numHealthRows, int healthRowHeight, int xLeft, CallbackInfo ci) {
         float hotbarScale = Scalable.getHotbarScaledSize();
         float scale = Minecraft.getInstance().options.fullscreen().get() ? hotbarScale : Math.min(hotbarScale, 2);
-
-        if (scale != 1.0f) {
-            float x = graphics.guiWidth() / 2.0f;
+         float x = graphics.guiWidth() / 2.0f;
             float y = graphics.guiHeight();
 
             graphics.pose().pushMatrix();
             graphics.pose().translate(x, y);
             graphics.pose().scale(scale, scale);
             graphics.pose().translate(-x, -y);
-        }
     }
 
     @Inject(method = "extractArmor", at = @At("RETURN"))
     private static void scalable_extractFrodoBaggins(GuiGraphicsExtractor graphics, Player player, int yLineBase, int numHealthRows, int healthRowHeight, int xLeft, CallbackInfo ci) {
-        float hotbarScale = Scalable.getHotbarScaledSize();
-        float scale = Minecraft.getInstance().options.fullscreen().get() ? hotbarScale : Math.min(hotbarScale, 2);
-
-        if (scale != 1.0f) {
-            graphics.pose().popMatrix();
-        }
+         graphics.pose().popMatrix();
     }
 
     @ModifyArgs(at = @At(value = "INVOKE", target = "Lorg/joml/Matrix3x2fStack;scale(FF)Lorg/joml/Matrix3x2f;", ordinal = 0), method = "extractTitle")
@@ -274,7 +242,7 @@ public class HudAndMiscStuffMixin {
     }
 
     @Inject(at = @At("HEAD"), method = "extractSelectedItemName")
-    private void extract(GuiGraphicsExtractor graphics, CallbackInfo ci) {
+    private void scalable_extractSelectedItemName(GuiGraphicsExtractor graphics, CallbackInfo ci) {
         float textScale = Scalable.getHotbarScaledSize();
 
         int centerX = graphics.guiWidth() / 2;
@@ -289,6 +257,44 @@ public class HudAndMiscStuffMixin {
 
     @Inject(at = @At("TAIL"), method = "extractSelectedItemName")
     private void extractTail(GuiGraphicsExtractor graphics, CallbackInfo ci) {
+        graphics.pose().popMatrix();
+    }
+
+    @Inject(at = @At("HEAD"), method = "extractTabList")
+    private void scalable_extractTabList(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, CallbackInfo ci) {
+        float textScale = Scalable.getTabScaledSize();
+
+        int centerX = graphics.guiWidth() / 2;
+        int yAnchor = 10;
+
+        graphics.pose().pushMatrix();
+
+        graphics.pose().translate(centerX, 0);
+        graphics.pose().scale(textScale, textScale);
+        graphics.pose().translate(-centerX, -yAnchor);
+    }
+
+    @Inject(at = @At("TAIL"), method = "extractTabList")
+    private void scalable_extractTabListTail(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, CallbackInfo ci) {
+        graphics.pose().popMatrix();
+    }
+
+    @Inject(at = @At("HEAD"), method = "extractScoreboardSidebar")
+    private void scalable_renderScoreboardSidebar(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, CallbackInfo ci) {
+        float textScale = Scalable.getScoreboardScaledSize();
+
+        int rightX = graphics.guiWidth();
+        int centerY = graphics.guiHeight() / 2;
+
+        graphics.pose().pushMatrix();
+
+        graphics.pose().translate(rightX, centerY);
+        graphics.pose().scale(textScale, textScale);
+        graphics.pose().translate(-rightX, -centerY);
+    }
+
+    @Inject(at = @At("TAIL"), method = "extractScoreboardSidebar")
+    private void scalable_extractScoreboardTail(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, CallbackInfo ci) {
         graphics.pose().popMatrix();
     }
 }
